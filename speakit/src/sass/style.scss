@@ -1,0 +1,20 @@
+@import '~normalize.css';
+@import '../assets/fonts/font_yanone.css';
+
+//Abstract
+@import 'abstract/constants';
+@import 'abstract/mixins';
+
+//Base
+@import 'base/base';
+@import 'base/buttons';
+//Layouts
+
+// Components
+@import 'component/modal';
+@import 'component/main-page';
+@import 'component/status-bar';
+@import 'component/images-block';
+@import 'component/card';
+@import 'component/results';
+@import 'component/statistics';

@@ -1,0 +1,40 @@
+.intro,
+.results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 10px;
+  transition: 0.5s;
+  background-image: url(../assets/img/bg.jpg);
+  background-size: cover;
+  .title {
+    font-size: 4.2rem;
+    color: $color-nav-text;
+    text-shadow: 0 2px 4px #8f83ff;
+    margin: -100px auto 40px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1.3rem;
+    font-weight: 600;
+    @include media-tablet {
+      margin: 0 auto 40px;
+    }
+  }
+  &-text {
+    max-width: 600px;
+    margin: 0 auto 60px;
+    font-size: 1.8rem;
+    line-height: 1.7rem;
+    letter-spacing: 0.4rem;
+    font-weight: 300;
+    color: #fff;
+    opacity: 0.8;
+  }
+}
