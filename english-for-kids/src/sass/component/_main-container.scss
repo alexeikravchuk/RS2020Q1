@@ -1,0 +1,13 @@
+.main-container {
+  position: relative;
+  display: flex;
+  max-width: 1440px;
+  width: 100%;
+  margin: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px 0;
+  @include media-mobile {
+    padding: 10px 0;
+  }
+}

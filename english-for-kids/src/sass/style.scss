@@ -1,0 +1,23 @@
+@import "base/normalize";
+
+//Abstract
+@import "abstract/constants";
+@import "abstract/mixins";
+
+//Base
+@import "base/base";
+@import "base/burger";
+//Layouts
+
+
+// Components
+@import "component/navigation";
+@import "component/header";
+@import "component/switcher";
+@import "component/main-container";
+@import "component/main-card";
+@import "component/word-card";
+@import "component/buttons";
+@import "component/rating-bar";
+@import "component/modal";
+@import "component/table";

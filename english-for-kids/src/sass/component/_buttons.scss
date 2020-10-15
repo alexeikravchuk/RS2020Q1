@@ -1,0 +1,60 @@
+.btns {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  text-align: center;
+  font-size: 0;
+  transition: all 0.4s ease-in;
+  &.none {
+    height: 0;
+    .btn {
+      height: 0;
+      visibility: hidden;
+      padding: 0;
+      margin: 0;
+      font-size: 0;
+    }
+  }
+  .btn {
+    box-sizing: border-box;
+    padding: 15px 25px;
+    font-size: 34px;
+    margin: 10px auto 0;
+    width: 100%;
+    //min-width: 310px;
+    max-width: 45%;
+    height: 60px;
+    background: radial-gradient($color-play, $color-play-2);
+    background-repeat: no-repeat;
+    background-size: 60px 60px cover;
+    background-position: center center;
+    color: $color-nav-text-active;
+    text-shadow: 2px 2px 3px rgb(2, 136, 53);
+    border-radius: 10px;
+    outline: 0!important;
+    border-width: 1px;
+    transition: width 0.5s linear, border-radius 0.3s 0.5s linear;
+
+    &:hover {
+      box-shadow: 1px 3px 5px gray;
+    }
+    &.repeat {
+      width: 60px;
+      font-size: 0;
+      background-image: url(/assets/icon/repeat.png),linear-gradient(40deg,$color-play, $color-play-2);
+      border-radius: 50%;
+    }
+    @include media-mobile {
+      font-size: 32px;
+      padding: 5px 25px;
+      height: 46px;
+      &.repeat {
+        width: 45px;
+      }
+    }
+    &.btn-repeat, &.btn-reset {
+      min-width: 300px;
+    }
+  }
+}
