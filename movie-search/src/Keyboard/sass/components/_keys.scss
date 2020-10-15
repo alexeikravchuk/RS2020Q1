@@ -1,0 +1,73 @@
+.key {
+  margin: 4px;
+  padding: 3px 8px 8px 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 5.5%;
+  flex-grow: 1;
+  height: 4.2rem;
+  font-size: 2rem;
+  line-height: 2rem;
+  background-color: $color-keys-background;
+  border-radius: 5px;
+  box-shadow: inset -2px -2px 3px 2px $color-keyboard-shadow;
+  cursor: pointer;
+  transition: all 0.1s linear;
+  -webkit-tap-highlight-color: transparent;
+  &:first-child {
+    flex-basis: 3.5%;
+  }
+  &.special_key {
+    background-color: $color-special-keys-background;
+    font-size: 1.4rem;
+    &-one_quarter {
+      flex-basis: 7%;
+      &-slim {
+        height: 1.25rem;
+      }
+    }
+    &-one_half {
+      flex-basis: 9%;
+    }
+    &-double_quarter {
+      flex-basis: 13%;
+    }
+    &-double_half {
+      flex-basis: 15%;
+      &.active {
+        transform: none;
+      }
+    }
+    &-seven {
+      flex-basis: 35%;
+    }
+
+    &.active {
+      transform: scale(0.995, 0.95);
+      font-size: 1.6rem;
+    }
+  }
+  &.active {
+    padding: 4px 8px 8px 4px;
+    box-shadow: inset -2px -2px 2px $color-keyboard-shadow;
+    background-color: $color-keys-active-background;
+    font-size: 2rem;
+    transform: scale(0.95);
+    transform-origin: 100% 100%;
+  }
+}
+
+.up-down-arrows {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 8%;
+  .key {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    padding: 0;
+    &.active {
+      padding: 0;
+    }
+  }
+}

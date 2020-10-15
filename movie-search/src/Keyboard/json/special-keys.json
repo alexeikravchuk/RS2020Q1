@@ -1,0 +1,87 @@
+{
+  "Backspace": {
+    "id": 13,
+    "value": "backspace",
+    "width": "double_quarter"
+  },
+  "Tab": {
+    "id": 14,
+    "value": "tab",
+    "width": "one_quarter"
+  },
+  "Delete": {
+    "id": 28,
+    "value": "del",
+    "width": "plus_quarter"
+  },
+  "CapsLock": {
+    "id": 29,
+    "value": "caps-lock",
+    "width": "one_half"
+  },
+  "Enter": {
+    "id": 41,
+    "value": "enter",
+    "width": "double_quarter"
+  },
+  "ShiftLeft": {
+    "id": 42,
+    "value": "shift",
+    "width": "double_quarter"
+  },
+  "ShiftRight": {
+    "id": 53,
+    "value": "shift",
+    "width": "double_half"
+  },
+  "ControlLeft": {
+    "id": 54,
+    "value": "ctrl",
+    "width": "one"
+  },
+  "MetaLeft": {
+    "id": 55,
+    "value": "lang",
+    "width": "one"
+  },
+  "AltLeft": {
+    "id": 56,
+    "value": "alt",
+    "width": "one"
+  },
+  "Space": {
+    "id": 57,
+    "value": "space",
+    "width": "seven"
+  },
+  "AltRight": {
+    "id": 58,
+    "value": "alt",
+    "width": "one"
+  },
+  "ControlRight": {
+    "id": 59,
+    "value": "ctrl",
+    "width": "plus_quarter"
+  },
+  "ArrowLeft": {
+    "id": 60,
+    "value": "←",
+    "width": "one"
+  },
+  "ArrowUp": {
+    "id": 61,
+    "value": "↑",
+    "width": "one_quarter_slim"
+  },
+  "ArrowDown": {
+    "id": 62,
+    "value": "↓",
+    "width": "one_quarter_slim"
+  },
+  "ArrowRight": {
+    "id": 63,
+    "value": "→",
+    "width": "one"
+  }
+}

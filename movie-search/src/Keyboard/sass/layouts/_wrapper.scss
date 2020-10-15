@@ -1,0 +1,16 @@
+.wrapper {
+  max-width: $content-width;
+  height: 98vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  @include media-laptop {
+    padding: 0 46px;
+  }
+  @include media-mobile {
+    padding: 0 10px;
+  }
+}
