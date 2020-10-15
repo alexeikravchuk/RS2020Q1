@@ -1,0 +1,27 @@
+.modal {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 500;
+  &.failure {
+    background-image: url(/assets/img/failure.png), linear-gradient(0deg, $color-background, white, $color-background);
+  }
+  &.success {
+    background-image: url(/assets/img/success.png), linear-gradient(0deg, $color-background, white, $color-background);
+  }
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 500px 500px, cover;
+  @include media-tablet {
+    background-size: 400px 400px, cover;
+  }
+  @include media-mobile {
+    background-size: 300px 300px, cover;
+  }
+  .errors__amount {
+    font-size: 42px;
+    text-align: center;
+    margin-top: 10%;
+  }
+}

@@ -1,0 +1,54 @@
+.menu-btn {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: radial-gradient($color-train, $color-train-2);
+    position: relative;
+    cursor: pointer;
+    z-index: 200;
+    &.play {
+      background: radial-gradient($color-play, $color-play-2);
+    }
+  }
+  
+  .menu-btn span,
+  .menu-btn span::before,
+  .menu-btn span::after {
+    position: absolute;
+    top: calc(50% - 2.5px);
+    width: 30px;
+    height: 5px;
+    border-radius: 3px;
+    background-color: rgb(66, 74, 121);
+    transition: all 0.2s ease-in-out;
+  }
+  .menu-btn span {
+    left: 10px;
+  }
+  
+  .menu-btn span::before,
+  .menu-btn span::after {
+    content: '';
+    display: block;
+  }
+  
+  .menu-btn span::before {
+    transform: translateY(-10px);
+  }
+  
+  .menu-btn span::after {
+    transform: translateY(10px);
+  }
+  
+  .menu-btn_active span {
+    height: 0;
+  }
+  
+  .menu-btn_active span:before {
+    transform: rotate(45deg);
+  }
+  
+  .menu-btn_active span:after {
+    transform: rotate(-45deg);
+  }

@@ -1,0 +1,33 @@
+.rating {
+  display: flex;
+  justify-content: flex-end;
+  width: 95%;
+  max-width: 1350px;
+  margin: 20px auto 0;
+  height: 40px;
+  overflow: hidden;
+  line-height: 30px;
+  font-size: 30px;
+  transition: 0.3s;
+  background: rgba(159, 216, 84, 0.2);
+  border-radius: 10px;
+  &.none {
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .star-error, .star-succes {
+    flex-shrink: 0;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    background-size: 40px 40px;
+  }
+  .star-error {
+    background-image: url('/assets/img/star.svg');
+  }
+  .star-succes {
+    background-image: url('/assets/img/star-win.svg');
+  }
+}
