@@ -9,18 +9,19 @@
   object-fit: cover;
   margin-bottom: 10px;
   border-radius: 5px;
-  box-shadow: 5px 5px 25px rgba(118,118,118,.25);
-  border: 10px solid rgba(55,97,151,0.2);
+  box-shadow: 5px 5px 25px rgba(118, 118, 118, 0.25);
+  border: 10px solid rgba(55, 97, 151, 0.2);
 }
 
 .translation {
-  color: rgba(14, 30, 37, .7);
+  color: rgba(14, 30, 37, 0.7);
   text-align: center;
   min-height: 30px;
   margin-bottom: 20px;
 }
 
-.word, .translation {
+.word,
+.translation {
   color: #0e1e25;
   font-size: 2.8rem;
   padding: 0px 5px;
@@ -41,7 +42,7 @@
   max-width: 1140px;
   font-size: 20px;
   line-height: 40px;
-  color: rgba(14, 30, 37, .7);
+  color: rgba(14, 30, 37, 0.7);
   text-align: center;
   font-size: 22px;
   background-image: url(../assets/img/microphone.svg);

@@ -14,13 +14,13 @@
   border: 1px solid rgb(206, 212, 218);
   border-radius: 5px;
   background-color: #fff;
-  transition: .3s;
+  transition: 0.3s;
   &:hover {
     box-shadow: 0 0 0 1px #03011852, 0 2px 6px 0 #1232414d;
   }
   &.active-card {
     border: 1px solid rgb(0, 173, 159);
-    background-color: rgba(0, 173, 159, .15);
+    background-color: rgba(0, 173, 159, 0.15);
   }
   .audio-icon {
     position: absolute;
@@ -31,14 +31,15 @@
     background-image: url(../assets/img/audio-icon.svg);
     background-repeat: no-repeat;
   }
-  .word, .translation {
+  .word,
+  .translation {
     color: #0e1e25;
     font-size: 22px;
     padding: 0px 5px;
     margin: 0;
   }
   .transcription {
-    color: rgba(14, 30, 37, .7);
+    color: rgba(14, 30, 37, 0.7);
     font-size: 18px;
     padding: 0px 5px;
     margin: 0;

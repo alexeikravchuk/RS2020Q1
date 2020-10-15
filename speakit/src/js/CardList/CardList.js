@@ -25,7 +25,9 @@ export default class CardList {
   async getWords(page, group) {
     const url = `${CARDS_LINK}group=${group}&page=${page}`;
     const res = await fetch(url);
-    this.cardList = await res.json();
+    const data = await res.json();
+    this.cardList = data;
+    return data;
   }
 
   createCardList() {

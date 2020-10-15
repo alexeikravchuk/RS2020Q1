@@ -49,7 +49,7 @@ export default class Controller {
     }
     card.playAudio();
     this.imagesBlock.img.src = card.getImgSrc();
-    this.imagesBlock.translation.innerText = card.state.translation;
+    this.imagesBlock.translation.innerText = card.state.wordTranslate;
     this.deactivateAllCards();
     if (!target.parentElement.classList.contains('error-cards')) {
       target.classList.add('active-card');
