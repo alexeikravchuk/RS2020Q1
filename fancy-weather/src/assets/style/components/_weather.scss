@@ -26,7 +26,8 @@
     font-size: 2.4rem;
     text-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.8);
     z-index: 2;
-    &-date, &-time {
+    &-date,
+    &-time {
       display: inline-block;
       margin: 2px;
     }
@@ -133,14 +134,14 @@
       display: flex;
       flex-direction: column;
       font-size: 2.8rem;
-     
+
       @include media-laptop {
         width: 50%;
         font-size: 2.2rem;
       }
       @include media-tablet {
         width: 55%;
-        font-size: 2.0rem;
+        font-size: 2rem;
       }
       @include media-mobile {
         width: 58%;

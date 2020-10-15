@@ -20,7 +20,8 @@ const FOOTER_LINKS = {
 const YANDEX_TRANSLATE_API = {
   link: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
   key: API_KEY_YANDEX_TRANSLATE,
-  getURL: (text, from, to) => `${YANDEX_TRANSLATE_API.link}?key=${YANDEX_TRANSLATE_API.key}&lang=${from}-${to}&text=${text}`,
+  getURL: (text, from, to) =>
+    `${YANDEX_TRANSLATE_API.link}?key=${YANDEX_TRANSLATE_API.key}&lang=${from}-${to}&text=${text}`,
   errorsMessage: ':( Error connecting to Yandex.Translate server.',
 };
 
@@ -44,15 +45,18 @@ const WEATHERBIT_API = {
   link: 'http://api.weatherbit.io/v2.0/',
   key: API_KEY_WEATHERBIT,
   getCurrentURL: (lat, lng) => `${WEATHERBIT_API.link}current?key=${WEATHERBIT_API.key}&lat=${lat}&lon=${lng}`,
-  getForecastURL: (lat, lng) => `${WEATHERBIT_API.link}forecast/daily?key=${WEATHERBIT_API.key}&days=5&lat=${lat}&lon=${lng}`,
+  getForecastURL: (lat, lng) =>
+    `${WEATHERBIT_API.link}forecast/daily?key=${WEATHERBIT_API.key}&days=5&lat=${lat}&lon=${lng}`,
   errorsMessage: 'weatherbit API error',
 };
 
 const GEOCODING_API = {
   link: 'https://api.opencagedata.com/geocode/v1/json',
   key: API_KEY_GEOCODING,
-  getReversURL: (lat, lng, language) => `${GEOCODING_API.link}?q=${lat}+${lng}&language=${language.toLowerCase()}&key=${GEOCODING_API.key}`,
-  getForvardURL: (placename, language) => `${GEOCODING_API.link}?q=${placename}&language=${language.toLowerCase()}&key=${GEOCODING_API.key}`,
+  getReversURL: (lat, lng, language) =>
+    `${GEOCODING_API.link}?q=${lat}+${lng}&language=${language.toLowerCase()}&key=${GEOCODING_API.key}`,
+  getForvardURL: (placename, language) =>
+    `${GEOCODING_API.link}?q=${placename}&language=${language.toLowerCase()}&key=${GEOCODING_API.key}`,
   errorsMessage: 'geocoding API error',
 };
 

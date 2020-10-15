@@ -60,7 +60,6 @@
   display: none;
 }
 
-
 @keyframes preloader-rotate {
   100% {
     transform: rotate(360deg);
@@ -68,7 +67,6 @@
 }
 
 @keyframes preloader-bounce {
-
   0%,
   100% {
     transform: scale(0);
@@ -119,7 +117,7 @@
         position: relative;
         padding-left: 50px;
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           left: 0px;
           top: -4px;

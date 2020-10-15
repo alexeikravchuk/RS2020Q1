@@ -1,16 +1,46 @@
 {
-  "lang": ["en", "ru", "be"],
+  "lang": [
+    "en",
+    "ru",
+    "be"
+  ],
   "placeholder": "Search city",
   "search": "search",
   "feel": "Feels like:",
   "wind": "Wind:",
   "ms": "m/s",
   "humidity": "Humidity:",
-  "day": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-  "dayShort": [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  "day": [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ],
+  "dayShort": [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+  ],
   "month": [
-    "January", "February", "March", "April", "May", "June", "July", "August", "September",
-    "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ],
   "lat": "Latitude",
   "lng": "Longitude",
@@ -65,7 +95,15 @@
     "ms": "meters per second",
     "dayExpected": " during the day is expected to be",
     "nightExpected": "and at night",
-    "inDay": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    "inDay": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ]
   },
   "keyWords": {
     "weather": "weather",
