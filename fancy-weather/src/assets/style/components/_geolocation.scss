@@ -1,0 +1,46 @@
+.geolocation {
+  &-wrapper {
+    position: relative;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-basis: 30%;
+    flex-grow: 1;
+    border-radius: 30px;
+    background-color: rgba($color: #000000, $alpha: 0.3);
+    transition: 0.3s ease-in-out;
+  }
+  &--map {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 60px);
+    min-width: 280px;
+    min-height: 250px;
+    -webkit-mask: url(/img/mask.png) top left / 100% 100% no-repeat;
+    mask: url(/img/mask.png) top left / 100% 100% no-repeat;
+    @include media-tablet {
+      height: 360px;
+    }
+    @include media-mobile {
+      height: 300px;
+      min-width: 280px;
+    }
+  }
+
+  &--coordinats {
+    font-size: 2.4rem;
+    line-height: 3rem;
+    font-weight: 500;
+    color: $text-color;
+    text-shadow: 0 0 10px rgba(black, 0.9);
+    text-align: right;
+    @include media-tablet {
+      font-size: 2rem;
+    }
+    @include media-mobile {
+      font-size: 1.6rem;
+    }
+  }
+}
