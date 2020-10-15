@@ -1,0 +1,48 @@
+.game {
+  &--wrapper {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: calc(100vh - 200px);
+    max-width: 1440px;
+    width: 100%;
+  }
+  &--control-wrapper {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.8rem;
+    color: #fff;
+    text-shadow: 0 0 5px #3c0253;
+    min-height: 20px;
+    width: 100%;
+    @media screen and (max-width: 400px) {
+      flex-direction: column;
+      align-content: center;
+    }
+  }
+  &--puzzle-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    @media screen and (max-width: 499px) {
+      &:after {
+        position: absolute;
+        content: "please, rotate the screen";
+        font-size: 4rem;
+        text-shadow: 0 0 10px black;
+        color: #c7a2ec;
+      }
+      & > div {
+        display: none;
+      }
+    }
+  }
+}
