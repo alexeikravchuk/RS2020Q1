@@ -16,7 +16,12 @@ export default async function getPuzzles({
   solidTextColor = 'white',
   fontStyle = 'fillText',
 }) {
-  if (!wordsList || !Array.isArray(wordsList) || !wordsList.length || !wordsList.every((el) => typeof el === 'string')) {
+  if (
+    !wordsList ||
+    !Array.isArray(wordsList) ||
+    !wordsList.length ||
+    !wordsList.every((el) => typeof el === 'string')
+  ) {
     throw new TypeError('"wordsList" argument must be an array containing strings. Example: ["string"]');
   }
 
@@ -54,7 +59,6 @@ export default async function getPuzzles({
 
         let widthCount = 0;
 
-
         row.classList.add('group-words');
         row.classList.add(`row-${i + 1}`);
 
@@ -69,7 +73,7 @@ export default async function getPuzzles({
           canvas.setAttribute('data-word', word);
 
           const ctx = canvas.getContext('2d');
-          let canvasWidth = (word.length * onePart) + extraWidth;
+          let canvasWidth = word.length * onePart + extraWidth;
 
           if (j === wordCount - 1) {
             canvasWidth = imgWidth - widthCount;
@@ -82,7 +86,7 @@ export default async function getPuzzles({
           const y1 = Math.round(canvasHeight / 3);
           const y2 = Math.round((canvasHeight / 3) * 2);
           const centerY = canvasHeight / 2;
-          const radius = Math.round((canvasHeight / 3) / 2);
+          const radius = Math.round(canvasHeight / 3 / 2);
           const startXPointCropImage = widthCount - canvasWidth;
           const fontSize = Math.round(canvasHeight / 4);
 
@@ -115,8 +119,17 @@ export default async function getPuzzles({
 
           ctx.clip();
 
-          ctx.drawImage(img, startXPointCropImage, startYPointCropImage, canvasWidth + radius,
-            canvasHeight, 0, 0, canvasWidth + radius, canvasHeight);
+          ctx.drawImage(
+            img,
+            startXPointCropImage,
+            startYPointCropImage,
+            canvasWidth + radius,
+            canvasHeight,
+            0,
+            0,
+            canvasWidth + radius,
+            canvasHeight,
+          );
 
           ctx.shadowColor = colorShadowBorder;
           ctx.strokeStyle = colorBorder;

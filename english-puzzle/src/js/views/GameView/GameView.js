@@ -38,9 +38,9 @@ export default class GameView {
     sentences[0].firstElementChild.classList.remove('hidden');
     sentences[0].lastElementChild.classList.add('current-sentence');
     this.container.querySelector('.group-words').remove();
-    this.container.querySelector('.sentence-translated')
-      .innerText = this.model.state.words[0].textExampleTranslate;
-    this.container.querySelector('.raw')
+    this.container.querySelector('.sentence-translated').innerText = this.model.state.words[0].textExampleTranslate;
+    this.container
+      .querySelector('.raw')
       .insertAdjacentElement('afterbegin', shufflePuzzles(this.model.state.puzzles[0]));
   }
 
@@ -55,13 +55,15 @@ export default class GameView {
     const sentenceElements = this.container.querySelectorAll('.result--sentence');
     const currentSentenceNumber = this.model.state.currentSentence;
     if (currentSentenceNumber < 10) {
-      this.container.querySelector('.sentence-translated')
-        .innerText = this.model.state.words[currentSentenceNumber].textExampleTranslate;
+      this.container.querySelector('.sentence-translated').innerText = this.model.state.words[
+        currentSentenceNumber
+      ].textExampleTranslate;
       sentenceElements[currentSentenceNumber - 1].lastElementChild.classList.remove('current-sentence');
       sentenceElements[currentSentenceNumber].firstElementChild.classList.remove('hidden');
       sentenceElements[currentSentenceNumber].lastElementChild.classList.add('current-sentence');
       this.container.querySelector('.group-words').remove();
-      this.container.querySelector('.raw')
+      this.container
+        .querySelector('.raw')
         .insertAdjacentElement('afterbegin', shufflePuzzles(this.model.state.puzzles[currentSentenceNumber]));
     }
   }

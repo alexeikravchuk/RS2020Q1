@@ -16,16 +16,18 @@ export default class App {
   }
 
   determineTarget(event) {
-    if ((event.target.classList.contains('signin_btn') && !event.target.disabled)
-    || (event.target.parentElement.classList.contains('signin_btn')
-    && !event.target.parentElement.disabled)) {
+    if (
+      (event.target.classList.contains('signin_btn') && !event.target.disabled)
+      || (event.target.parentElement.classList.contains('signin_btn') && !event.target.parentElement.disabled)
+    ) {
       event.preventDefault();
       return this.model.signIn();
     }
 
-    if ((event.target.classList.contains('signup_btn') && !event.target.disabled)
-    || (event.target.parentElement.classList.contains('signup_btn')
-    && !event.target.parentElement.disabled)) {
+    if (
+      (event.target.classList.contains('signup_btn') && !event.target.disabled)
+      || (event.target.parentElement.classList.contains('signup_btn') && !event.target.parentElement.disabled)
+    ) {
       event.preventDefault();
       return this.model.signUp();
     }

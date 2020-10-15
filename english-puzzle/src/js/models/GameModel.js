@@ -65,14 +65,18 @@ export default class GameModel {
   }
 
   determinateClick(event) {
-    if (event.target.classList.contains('canvas-item')
-    && event.target.parentElement.classList.contains('group-words')) {
+    if (
+      event.target.classList.contains('canvas-item')
+      && event.target.parentElement.classList.contains('group-words')
+    ) {
       const currentSentence = this.container.querySelector('.current-sentence');
       currentSentence.insertAdjacentElement('beforeend', event.target);
       return this.checkCurrentSentence();
     }
-    if (event.target.classList.contains('canvas-item')
-    && event.target.parentElement.classList.contains('current-sentence')) {
+    if (
+      event.target.classList.contains('canvas-item')
+      && event.target.parentElement.classList.contains('current-sentence')
+    ) {
       if (localStorage.lastPuzzle) {
         const lastPuzzle = this.container.querySelector(`[data-item="${localStorage.lastPuzzle}"]`);
         lastPuzzle.classList.remove('active');
@@ -88,35 +92,45 @@ export default class GameModel {
       event.target.classList.add('active');
       return 1;
     }
-    if (event.target.classList.contains('material-icons')
-    && event.target.parentElement.classList.contains('audio-hint')) {
+    if (
+      event.target.classList.contains('material-icons')
+      && event.target.parentElement.classList.contains('audio-hint')
+    ) {
       return this.playSentence();
     }
 
-    if (event.target.classList.contains('material-icons')
-    && event.target.parentElement.classList.contains('autoplay-btn')) {
+    if (
+      event.target.classList.contains('material-icons')
+      && event.target.parentElement.classList.contains('autoplay-btn')
+    ) {
       event.target.parentElement.classList.toggle('disabled');
       localStorage.isAutoplayActive = !this.state.isAutoplayActive;
       this.state.isAutoplayActive = JSON.parse(localStorage.isAutoplayActive);
       return 1;
     }
 
-    if (event.target.classList.contains('material-icons')
-    && event.target.parentElement.classList.contains('translate-btn')) {
+    if (
+      event.target.classList.contains('material-icons')
+      && event.target.parentElement.classList.contains('translate-btn')
+    ) {
       event.target.parentElement.classList.toggle('disabled');
       this.container.querySelector('.sentence-translated').classList.toggle('hidden');
       return 1;
     }
 
-    if (event.target.classList.contains('material-icons')
-    && event.target.parentElement.classList.contains('listen-btn')) {
+    if (
+      event.target.classList.contains('material-icons')
+      && event.target.parentElement.classList.contains('listen-btn')
+    ) {
       event.target.parentElement.classList.toggle('disabled');
       this.container.querySelector('.audio-hint').classList.toggle('hidden');
       return 1;
     }
 
-    if (event.target.classList.contains('material-icons')
-    && event.target.parentElement.classList.contains('image-btn')) {
+    if (
+      event.target.classList.contains('material-icons')
+      && event.target.parentElement.classList.contains('image-btn')
+    ) {
       event.target.parentElement.classList.toggle('disabled');
       const puzzleBackground = this.container.querySelector('.result-field--background');
       puzzleBackground.classList.toggle('image');
@@ -154,7 +168,9 @@ export default class GameModel {
     if (!this.state.audioplay) {
       this.state.audioplay = new Audio(audioSrc);
       this.state.audioplay.play();
-      this.state.audioplay.addEventListener('ended', () => { this.state.audioplay = ''; });
+      this.state.audioplay.addEventListener('ended', () => {
+        this.state.audioplay = '';
+      });
     }
   }
 
@@ -168,7 +184,7 @@ export default class GameModel {
       }
       return false;
     });
-    if (isCorectOrder && (sentenceLength === canvasItems.length)) {
+    if (isCorectOrder && sentenceLength === canvasItems.length) {
       return this.showNextWords();
     }
     return 0;

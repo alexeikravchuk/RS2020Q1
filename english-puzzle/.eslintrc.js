@@ -4,9 +4,7 @@ module.exports = {
     es6: true,
     jest: true,
   },
-  extends: [
-    'airbnb-base',
-  ],
+  extends: ['airbnb-base'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -19,6 +17,6 @@ module.exports = {
   rules: {
     'lines-between-class-members': 'warn',
     'class-methods-use-this': 'warn',
-    'no-unused-vars': 'warn'
+    'no-unused-vars': 'warn',
   },
 };

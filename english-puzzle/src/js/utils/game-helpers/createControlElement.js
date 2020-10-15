@@ -4,7 +4,9 @@ import createElement from '../app-helpers/createElement';
 
 export default function createControlElement(gameState) {
   const control = createElement('div', 'game--control-wrapper');
-  control.insertAdjacentHTML('afterbegin', `
+  control.insertAdjacentHTML(
+    'afterbegin',
+    `
     <form class="control--raunds">
       <div class="control--raunds-level">
         <label for="levels">Level</label>
@@ -46,6 +48,7 @@ export default function createControlElement(gameState) {
         <p class="sentence-translated">${gameState.words[0].textExampleTranslate}</p>
       </div>
     </div>
-  `);
+  `,
+  );
   return control;
 }
