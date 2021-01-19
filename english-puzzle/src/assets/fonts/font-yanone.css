@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Yanone Kaffeesatz';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Yanone Kaffeesatz Regular'), local('Yanone-Kaffeesatz-Regular'),
+     url('YanoneKaffeesatz-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Yanone Kaffeesatz';
+  font-style: normal  ;
+  font-weight: 700;
+  src: local('Yanone Kaffeesatz Bold'), local('Yanone-Kaffeesatz-Bold'),
+     url('YanoneKaffeesatz-Bold.ttf');
+}
