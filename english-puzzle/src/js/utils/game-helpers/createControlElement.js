@@ -4,6 +4,8 @@ import createElement from '../app-helpers/createElement';
 
 export default function createControlElement(gameState) {
   const control = createElement('div', 'game--control-wrapper');
+
+  const textExampleTranslate = gameState.words && gameState.words[0] ? gameState.words[0].textExampleTranslate : '';
   control.insertAdjacentHTML(
     'afterbegin',
     `
@@ -45,7 +47,7 @@ export default function createControlElement(gameState) {
         <span class="tooltiptext">play pronunciation hint</span>
       </div>
       <div class="translation-hint">
-        <p class="sentence-translated">${gameState.words[0].textExampleTranslate}</p>
+        <p class="sentence-translated">${textExampleTranslate}</p>
       </div>
     </div>
   `,

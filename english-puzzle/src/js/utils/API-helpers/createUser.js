@@ -14,7 +14,7 @@ export default async function (user) {
   }
 
   if (rawResponse.status === 417) {
-    throw Error('user with such email is already registered');
+    throw new Error('user with such email is already registered');
   }
-  return console.log(rawResponse);
+  throw new Error(`Failed to create user: ${rawResponse.status} ${rawResponse.statusText}`);
 }

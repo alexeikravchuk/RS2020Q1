@@ -20,7 +20,7 @@ export default class AppView {
       <div class="header--wrapper wrapper">
         <h1 class="header--title">English Puzzle</h1>
         <div class="header--buttons">
-          <button class="header--buttons-logout_btn logout_btn hidden" title="logout">Logout</button>
+          <button class="header--buttons-logout_btn logout_btn hidden" disabled title="logout">Logout</button>
         </div>
       </div>
     </header>

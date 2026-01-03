@@ -1,19 +1,26 @@
-import { WORDS_PER_PAGE, WORDS_PER_SENTENCE } from '../../constants';
-
 export default async function getNumberOfPages(group) {
-  const url = `https://afternoon-falls-25894.herokuapp.com/words/count?group=${group}&wordsPerExampleSentenceLTE=${WORDS_PER_PAGE}&wordsPerPage=${WORDS_PER_SENTENCE}`;
-  const rawResponse = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (rawResponse.status === 200) {
-    const content = await rawResponse.json();
-    return content.count;
+  if (typeof group !== 'number' || group < 0) {
+    throw new Error(`Invalid group parameter: ${group}`);
   }
-  console.log(rawResponse);
-  throw Error('error getting page count');
+
+  const level = group + 1;
+  const response = await fetch(`/collections/wordCollectionLevel${level}.json`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to load word collection for level ${level}: ${response.status} ${response.statusText}`);
+  }
+
+  let data;
+  try {
+    const text = await response.text();
+    data = JSON.parse(text);
+  } catch (error) {
+    throw new Error(`Failed to parse JSON for level ${level}: ${error.message}`);
+  }
+
+  if (!data || !data.rounds || !Array.isArray(data.rounds)) {
+    throw new Error(`Invalid data structure in word collection for level ${level}`);
+  }
+
+  return data.rounds.length;
 }

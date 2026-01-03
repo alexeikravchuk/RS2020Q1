@@ -17,10 +17,10 @@ export default async function getPuzzles({
   fontStyle = 'fillText',
 }) {
   if (
-    !wordsList ||
-    !Array.isArray(wordsList) ||
-    !wordsList.length ||
-    !wordsList.every((el) => typeof el === 'string')
+    !wordsList
+    || !Array.isArray(wordsList)
+    || !wordsList.length
+    || !wordsList.every((el) => typeof el === 'string')
   ) {
     throw new TypeError('"wordsList" argument must be an array containing strings. Example: ["string"]');
   }
@@ -157,8 +157,7 @@ export default async function getPuzzles({
     };
 
     img.onerror = (err) => {
-      console.log(err);
-      reject(err);
+      reject(new Error(`Failed to load image: ${src}`));
     };
   });
 }

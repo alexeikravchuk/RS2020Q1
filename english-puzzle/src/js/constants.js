@@ -16,6 +16,7 @@ const WORDS_PER_PAGE = 10;
 const WORDS_PER_SENTENCE = 10;
 const BACKGROUND_DEFAULT = './assets/img/background_default.jpg';
 const AUDIO_SRC = 'https://raw.githubusercontent.com/alexeikravchuk/rslang-data/master/';
+const GAME_START_DELAY_MS = 310;
 
 export {
   TOKEN_LIFETIME,
@@ -25,4 +26,5 @@ export {
   BACKGROUND_DEFAULT,
   FOOTER_LINKS,
   AUDIO_SRC,
+  GAME_START_DELAY_MS,
 };

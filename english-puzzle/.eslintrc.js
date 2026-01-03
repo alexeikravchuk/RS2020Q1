@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true,
+    es2022: true,
     jest: true,
   },
   extends: ['airbnb-base'],
@@ -10,10 +10,9 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2021,
     sourceType: 'module',
   },
-  parser: 'babel-eslint',
   rules: {
     'lines-between-class-members': 'warn',
     'class-methods-use-this': 'warn',

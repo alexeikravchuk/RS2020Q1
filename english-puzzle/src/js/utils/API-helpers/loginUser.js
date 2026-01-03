@@ -12,7 +12,7 @@ export default async function loginUser(user) {
     return content;
   }
   if (rawResponse.status === 403) {
-    throw Error('Incorrect password');
+    throw new Error('Incorrect password');
   }
-  throw Error('User with such email is not registered');
+  throw new Error('User with such email is not registered');
 }

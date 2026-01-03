@@ -1,6 +1,10 @@
 import { TOKEN_LIFETIME } from '../../constants';
 
 export default function checkToken() {
+  return true;
+
+  // server is not working, so we need to comment this out
+  /*
   if (localStorage.token && localStorage.tokenTime) {
     const currentTime = Date.now();
     const tokenTime = new Date(JSON.parse(localStorage.tokenTime));
@@ -10,4 +14,5 @@ export default function checkToken() {
     return false;
   }
   return false;
+  */
 }
