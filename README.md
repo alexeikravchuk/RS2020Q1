@@ -1,3 +1,6 @@
+## Demo: [EnglishPuzzle](alexeikravchuk-english-puzzle.netlify.app)
+
+---
 # [speakit](https://github.com/alexeikravchuk/RS2020Q1/tree/speakit)
 
 SpeakIt - одностраничное приложение, при помощи которого можно прослушать произношение английских слов и использовать технологию распознавания речи Google Web Speech API для проверки правильности произношения.
