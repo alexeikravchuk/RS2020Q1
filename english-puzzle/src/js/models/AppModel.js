@@ -1,13 +1,14 @@
 import AppView from '../views/AppView';
 import checkToken from '../utils/app-helpers/checkToken';
+import createUser from '../utils/API-helpers/createUser';
+import loginUser from '../utils/API-helpers/loginUser';
 import GameModel from './GameModel';
-import { GAME_START_DELAY_MS } from '../constants';
 
 export default class AppModel {
-  constructor(container) {
-    this.container = container;
-    this.view = new AppView(this, container);
-    this.gameModel = new GameModel(container);
+  constructor(conatiner) {
+    this.conatiner = conatiner;
+    this.view = new AppView(this, conatiner);
+    this.gameModel = new GameModel(conatiner);
   }
 
   async init() {
@@ -19,6 +20,42 @@ export default class AppModel {
     return this.view.showIntro();
   }
 
+  /*
+  async signUp() {
+    try {
+      const result = await createUser(this.view.inputValues);
+      if (result) {
+        localStorage.userEmail = result.email;
+        localStorage.userId = result.id;
+        this.signIn();
+      }
+    } catch (e) {
+      this.showLoginError(e.message);
+    }
+  }
+
+  async signIn() {
+    try {
+      const result = await loginUser(this.view.inputValues);
+      if (result) {
+        localStorage.token = result.token;
+        localStorage.tokenTime = JSON.stringify(new Date());
+        localStorage.userEmail = this.view.inputValues.email;
+        localStorage.userId = result.userId;
+        await this.gameModel.init();
+        this.view.showIntro();
+      }
+    } catch (e) {
+      this.showLoginError(e.message);
+    }
+  }
+
+  logOut() {
+    localStorage.removeItem('token');
+    this.view.showLoginWindow();
+  }
+  */
+
   showLoginError(message) {
     if (message.includes('password')) {
       return this.view.showPasswordError(message);
@@ -28,6 +65,6 @@ export default class AppModel {
 
   startGame() {
     this.view.removeIntro();
-    setTimeout(() => this.gameModel.start(), GAME_START_DELAY_MS);
+    setTimeout(() => this.gameModel.start(), 310);
   }
 }

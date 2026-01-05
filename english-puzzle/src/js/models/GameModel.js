@@ -4,38 +4,35 @@ import getCurrentPageWords from '../utils/API-helpers/getCurrentPageWords';
 import getImageSrc from '../utils/game-helpers/getImgSrc';
 import getPuzzles from '../utils/game-helpers/getPuzzles';
 import { AUDIO_SRC } from '../constants';
-import LocalStorage from '../utils/app-helpers/localStorage';
 
 export default class GameModel {
-  #dataReadyPromise;
-  #dataReadyResolve;
+  #setDataResolve;
+  #dataSetPromise = new Promise((resolve, _reject) => {
+    this.#setDataResolve = resolve;
+  });
 
   constructor(container) {
     this.container = container;
     this.view = new GameView(this, container);
-    this.#initializeDataReadyPromise();
-  }
-
-  #initializeDataReadyPromise() {
-    this.#dataReadyPromise = new Promise((resolve) => {
-      this.#dataReadyResolve = resolve;
-    });
   }
 
   async init() {
+    const autoplay = localStorage.isAutoplayActive;
+
     this.state = {
-      level: LocalStorage.getNumber('level', 0),
-      currentPage: LocalStorage.getNumber('currentPage', 0),
+      level: +localStorage.level || 0,
+      currentPage: +localStorage.currentPage || 0,
       currentSentence: 0,
-      isAutoplayActive: LocalStorage.getBoolean('isAutoplayActive', true),
-      isTranslateActive: LocalStorage.getBoolean('isTranslateActive', true),
-      isPronunciationActive: LocalStorage.getBoolean('isPronunciationActive', true),
-      isImageActive: LocalStorage.getBoolean('isImageActive', false),
+      isAutoplayActive: autoplay ? JSON.parse(autoplay) : true,
+      isTranslateActive: localStorage.isTranslateActive || true,
+      isPronunciationActive: localStorage.isPronunciationActive || true,
+      isImageActive: localStorage.isImageActive || false,
       words: [],
+      pages: 0,
     };
 
     await this.setData();
-    this.#dataReadyResolve();
+    return this.#setDataResolve();
   }
 
   async setData() {
@@ -53,73 +50,140 @@ export default class GameModel {
         src: this.state.imageSrcs.cutSrc,
         wordsList: this.state.words.map((word) => word.textExample),
       });
-      return true;
-    } catch (error) {
-      this.showError(error.message || 'Failed to load game data');
-      return false;
+      return 1;
+    } catch (e) {
+      this.container.innerHTML = e;
     }
+    return 0;
   }
 
-  async start() {
-    try {
-      await this.#dataReadyPromise;
-      this.view.render();
-      this.makePuzzleDragable();
-      this.setListeners();
-      if (this.state.isAutoplayActive) {
-        this.playSentence();
+  start() {
+    this.#dataSetPromise.then(() => {
+      console.log('dataSetPromise resolved');
+      console.log(this.state);
+      try {
+        this.view.render();
+        this.makePuzzleDragable();
+        this.setListeners();
+        if (+this.state.isAutoplayActive) {
+          this.playSentence();
+        }
+      } catch (e) {
+        console.log(e);
+        this.container.innerHTML = e;
       }
-    } catch (error) {
-      this.showError(error.message || 'Failed to start game');
-    }
-  }
-
-  showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    errorDiv.style.cssText = 'padding: 20px; color: red; background: #ffe6e6; border: 1px solid red; margin: 20px;';
-    this.container.innerHTML = '';
-    this.container.appendChild(errorDiv);
+    });
   }
 
   setListeners() {
-    const levelsElement = document.getElementById('levels');
-    const pagesElement = document.getElementById('pages');
-    if (levelsElement) {
-      levelsElement.addEventListener('change', (e) => this.changePage(e));
-    }
-    if (pagesElement) {
-      pagesElement.addEventListener('change', (e) => this.changePage(e));
-    }
+    document.getElementById('levels').addEventListener('change', (e) => this.changePage(e));
+    document.getElementById('pages').addEventListener('change', (e) => this.changePage(e));
     this.container.addEventListener('click', (e) => this.determinateClick(e));
+    
+    this.container.addEventListener('dragstart', (e) => {
+      this.handleDragStart(e);
+    });
+    
+    this.container.addEventListener('dragover', (e) => {
+      if (e.target.classList.contains('result--sentence-text_container') || 
+          e.target.classList.contains('current-sentence') ||
+          e.target.classList.contains('canvas-item')) {
+        this.handleDragOver(e);
+      }
+    });
+    
+    this.container.addEventListener('drop', (e) => {
+      if (e.target.classList.contains('result--sentence-text_container') || 
+          e.target.classList.contains('current-sentence') ||
+          e.target.classList.contains('canvas-item')) {
+        this.handleDrop(e);
+      }
+    });
+  }
+  
+  handleDragStart(event) {
+    const target = event.target;
+    if (!target.hasAttribute('data-item') || !target.classList.contains('canvas-item')) {
+      return;
+    }
+    if (target.parentElement && target.parentElement.classList.contains('completed')) {
+      event.preventDefault();
+      return false;
+    }
+    target.style.cursor = 'grabbing';
+    event.dataTransfer.effectAllowed = 'copyMove';
+    event.dataTransfer.setData('text', target.dataset.item);
+  }
+  
+  handleDragOver(event) {
+    if (event.target.classList.contains('completed')) {
+      return;
+    }
+    if (event.target.classList.contains('canvas-item') && event.target.parentElement.classList.contains('completed')) {
+      return;
+    }
+    event.preventDefault();
+  }
+  
+  handleDrop(event) {
+    event.preventDefault();
+    const data = event.dataTransfer.getData('text');
+    const element = document.querySelector(`[data-item="${data}"]`);
+    
+    if (!element) {
+      return 0;
+    }
+    
+    if (element.parentElement && element.parentElement.classList.contains('completed')) {
+      return 0;
+    }
+
+    element.style.cursor = 'grab';
+
+    if (event.target.classList.contains('current-sentence')) {
+      if (event.target.classList.contains('completed')) {
+        return 0;
+      }
+      event.target.appendChild(element);
+      return this.checkCurrentSentence();
+    }
+    if (event.target.classList.contains('canvas-item')) {
+      const targetParent = event.target.parentElement;
+      if (targetParent && targetParent.classList.contains('completed')) {
+        return 0;
+      }
+      if (event.offsetX < event.target.clientWidth / 2) {
+        event.target.insertAdjacentElement('beforebegin', element);
+        return this.checkCurrentSentence();
+      }
+      event.target.insertAdjacentElement('afterend', element);
+      return this.checkCurrentSentence();
+    }
+    return 0;
   }
 
   determinateClick(event) {
     const { target } = event;
 
     const resultFromGroup = this.handleCanvasItemFromGroup(target);
-    if (resultFromGroup !== null && resultFromGroup !== false) {
-      return resultFromGroup;
-    }
+    if (resultFromGroup !== null) return resultFromGroup;
 
     const resultFromSentence = this.handleCanvasItemFromSentence(event, target);
-    if (resultFromSentence !== null && resultFromSentence !== false) {
-      return resultFromSentence;
-    }
+    if (resultFromSentence !== null) return resultFromSentence;
 
     const resultFromIcon = this.handleMaterialIconClick(event, target);
-    if (resultFromIcon !== null && resultFromIcon !== false) {
-      return resultFromIcon;
-    }
+    if (resultFromIcon !== null) return resultFromIcon;
 
-    return false;
+    const resultFromButton = this.handleButtonClick(event, target);
+    if (resultFromButton !== null) return resultFromButton;
+
+    return 0;
   }
 
   handleCanvasItemFromGroup(target) {
-    if (target.classList.contains('canvas-item') && target.parentElement?.classList.contains('group-words')) {
+    if (target.classList.contains('canvas-item') && target.parentElement.classList.contains('group-words')) {
       const currentSentence = this.container.querySelector('.current-sentence');
-      if (currentSentence) {
+      if (currentSentence && !currentSentence.classList.contains('completed')) {
         currentSentence.insertAdjacentElement('beforeend', target);
         return this.checkCurrentSentence();
       }
@@ -128,27 +192,30 @@ export default class GameModel {
   }
 
   handleCanvasItemFromSentence(event, target) {
-    if (!target.classList.contains('canvas-item') || !target.parentElement.classList.contains('current-sentence')) {
+    if (!target.classList.contains('canvas-item')) {
       return null;
     }
 
-    const lastPuzzleId = LocalStorage.get('lastPuzzle');
-    if (lastPuzzleId) {
-      return this.moveLastPuzzle(event, target, lastPuzzleId);
+    if (target.parentElement.classList.contains('completed')) {
+      return null;
+    }
+
+    if (!target.parentElement.classList.contains('current-sentence')) {
+      return null;
+    }
+
+    if (localStorage.lastPuzzle) {
+      return this.moveLastPuzzle(event, target);
     }
 
     GameModel.selectPuzzle(target);
-    return true;
+    return 1;
   }
 
-  moveLastPuzzle(event, target, lastPuzzleId) {
-    const lastPuzzle = this.container.querySelector(`[data-item="${lastPuzzleId}"]`);
-    if (!lastPuzzle) {
-      LocalStorage.remove('lastPuzzle');
-      return false;
-    }
+  moveLastPuzzle(event, target) {
+    const lastPuzzle = this.container.querySelector(`[data-item="${localStorage.lastPuzzle}"]`);
     lastPuzzle.classList.remove('active');
-    LocalStorage.remove('lastPuzzle');
+    localStorage.lastPuzzle = '';
 
     const insertPosition = event.offsetX < target.clientWidth / 2 ? 'beforebegin' : 'afterend';
     target.insertAdjacentElement(insertPosition, lastPuzzle);
@@ -156,11 +223,8 @@ export default class GameModel {
   }
 
   static selectPuzzle(target) {
-    const itemId = target.dataset.item;
-    if (itemId) {
-      LocalStorage.set('lastPuzzle', itemId);
-      target.classList.add('active');
-    }
+    localStorage.lastPuzzle = target.dataset.item;
+    target.classList.add('active');
   }
 
   handleMaterialIconClick(event, target) {
@@ -169,10 +233,6 @@ export default class GameModel {
     }
 
     const parent = target.parentElement;
-    if (!parent) {
-      return null;
-    }
-
     if (parent.classList.contains('audio-hint')) {
       return this.playSentence();
     }
@@ -188,41 +248,51 @@ export default class GameModel {
     if (parent.classList.contains('image-btn')) {
       return this.toggleImage(parent);
     }
+    if (parent.classList.contains('finish-btn')) {
+      return this.finishCurrentSentence();
+    }
 
+    return null;
+  }
+
+  handleButtonClick(event, target) {
+    let button = target;
+    
+    if (target.classList.contains('material-icons')) {
+      button = target.parentElement;
+    }
+    
+    if (button && button.classList.contains('finish-btn')) {
+      return this.finishCurrentSentence();
+    }
     return null;
   }
 
   toggleAutoplay(button) {
     button.classList.toggle('disabled');
-    this.state.isAutoplayActive = !this.state.isAutoplayActive;
-    LocalStorage.set('isAutoplayActive', this.state.isAutoplayActive);
-    return true;
+    localStorage.isAutoplayActive = !this.state.isAutoplayActive;
+    this.state.isAutoplayActive = JSON.parse(localStorage.isAutoplayActive);
+    return 1;
   }
 
   toggleTranslate(button) {
     button.classList.toggle('disabled');
-    const translatedElement = this.container.querySelector('.sentence-translated');
-    if (translatedElement) {
-      translatedElement.classList.toggle('hidden');
-    }
-    return true;
+    this.container.querySelector('.sentence-translated').classList.toggle('hidden');
+    return 1;
   }
 
   toggleListen(button) {
     button.classList.toggle('disabled');
-    const audioHintElement = this.container.querySelector('.audio-hint');
-    if (audioHintElement) {
-      audioHintElement.classList.toggle('hidden');
-    }
-    return true;
+    this.container.querySelector('.audio-hint').classList.toggle('hidden');
+    return 1;
   }
 
   toggleImage(button) {
     button.classList.toggle('disabled');
+    this.state.isImageActive = !button.classList.contains('disabled');
+    localStorage.isImageActive = this.state.isImageActive;
+    
     const puzzleBackground = this.container.querySelector('.result-field--background');
-    if (!puzzleBackground) {
-      return false;
-    }
     puzzleBackground.classList.toggle('image');
 
     if (button.classList.contains('disabled')) {
@@ -230,133 +300,144 @@ export default class GameModel {
     } else {
       puzzleBackground.style.backgroundImage = `url(${this.state.imageSrcs.cutSrc})`;
     }
-    return true;
+    return 1;
   }
 
   async changePage(event) {
     if (event.target.id === 'levels') {
-      this.state.level = Number(event.target.value) - 1;
+      this.state.level = event.target.value - 1;
       this.state.currentPage = 0;
-      LocalStorage.set('level', this.state.level);
-      LocalStorage.set('currentPage', this.state.currentPage);
       this.view.updatePageOptions();
     } else if (event.target.id === 'pages') {
-      this.state.currentPage = Number(event.target.value) - 1;
-      LocalStorage.set('currentPage', this.state.currentPage);
+      this.state.currentPage = event.target.value - 1;
     }
 
     this.state.currentSentence = 0;
     await this.setData();
     this.view.resetPuzzle();
-    this.makePuzzleDragable();
-    if (this.state.isAutoplayActive) {
+    setTimeout(() => {
+      this.makePuzzleDragable();
+    }, 0);
+    if (+this.state.isAutoplayActive) {
       this.playSentence();
     }
   }
 
   playSentence() {
-    const currentWord = this.state.words[this.state.currentSentence];
-    if (!currentWord || !currentWord.audioExample) {
-      return false;
-    }
-
-    const audioSrc = `${AUDIO_SRC}${currentWord.audioExample}`;
+    const audioSrc = `${AUDIO_SRC}${this.state.words[this.state.currentSentence].audioExample}`;
     if (!this.state.audioplay) {
       this.state.audioplay = new Audio(audioSrc);
+      this.state.audioplay.play();
       this.state.audioplay.addEventListener('ended', () => {
-        this.state.audioplay = null;
-      });
-      this.state.audioplay.addEventListener('error', () => {
-        this.state.audioplay = null;
-      });
-      this.state.audioplay.play().catch(() => {
-        this.state.audioplay = null;
+        this.state.audioplay = '';
       });
     }
-    return true;
   }
 
   checkCurrentSentence() {
     const sentenceElement = this.view.currentSentenceElement;
-    if (!sentenceElement) {
-      return false;
-    }
-
-    const currentWord = this.state.words[this.state.currentSentence];
-    if (!currentWord) {
-      return false;
-    }
-
-    const sentenceLength = Number(currentWord.wordsPerExampleSentence);
+    const sentenceLength = +this.state.words[this.state.currentSentence].wordsPerExampleSentence;
     const canvasItems = sentenceElement.querySelectorAll('.canvas-item');
-    const isCorrectOrder = Array.from(canvasItems).every((item, i) => {
-      const itemParts = item.dataset.item?.split('-');
-      if (!itemParts || itemParts.length < 2) {
-        return false;
+    const isCorectOrder = Array.from(canvasItems).every((item, i) => {
+      if (+item.dataset.item.split('-')[1] === i + 1) {
+        return true;
       }
-      return Number(itemParts[1]) === i + 1;
+      return false;
     });
-
-    if (isCorrectOrder && sentenceLength === canvasItems.length) {
+    if (isCorectOrder && sentenceLength === canvasItems.length) {
       return this.showNextWords();
     }
-    return false;
+    return 0;
+  }
+
+  finishCurrentSentence() {
+    const currentSentence = this.container.querySelector('.current-sentence');
+    if (!currentSentence || currentSentence.classList.contains('completed')) {
+      return 0;
+    }
+
+    const currentSentenceIndex = this.state.currentSentence;
+    const sentenceLength = +this.state.words[currentSentenceIndex].wordsPerExampleSentence;
+    
+    const existingWords = currentSentence.querySelectorAll('.canvas-item');
+    const existingWordItems = new Set(Array.from(existingWords).map((word) => word.dataset.item));
+    
+    const groupWords = this.container.querySelector('.group-words');
+    if (!groupWords) {
+      return 0;
+    }
+
+    const allWords = groupWords.querySelectorAll('.canvas-item');
+    const currentSentenceWords = Array.from(allWords).filter((word) => {
+      const itemData = word.dataset.item.split('-');
+      return +itemData[0] === currentSentenceIndex + 1 && !existingWordItems.has(word.dataset.item);
+    });
+
+    const totalWords = existingWords.length + currentSentenceWords.length;
+    if (totalWords !== sentenceLength) {
+      return 0;
+    }
+
+    currentSentenceWords.sort((a, b) => {
+      const aIndex = +a.dataset.item.split('-')[1];
+      const bIndex = +b.dataset.item.split('-')[1];
+      return aIndex - bIndex;
+    });
+
+    const allSentenceWords = Array.from(existingWords).concat(currentSentenceWords);
+    allSentenceWords.sort((a, b) => {
+      const aIndex = +a.dataset.item.split('-')[1];
+      const bIndex = +b.dataset.item.split('-')[1];
+      return aIndex - bIndex;
+    });
+
+    currentSentence.innerHTML = '';
+    allSentenceWords.forEach((word) => {
+      currentSentence.appendChild(word);
+    });
+
+    return this.checkCurrentSentence();
   }
 
   showNextWords() {
+    const previousSentenceIndex = this.state.currentSentence;
     this.state.currentSentence += 1;
+    this.lockCompletedSentence(previousSentenceIndex);
     this.view.showNextWords();
-    if (this.state.isAutoplayActive) {
+    setTimeout(() => {
+      this.makePuzzleDragable();
+    }, 0);
+    if (this.state.currentSentence < 10 && +this.state.isAutoplayActive) {
       this.playSentence();
     }
-    return true;
+  }
+
+  lockCompletedSentence(sentenceIndex) {
+    const sentenceElements = this.container.querySelectorAll('.result--sentence');
+    if (sentenceIndex >= 0 && sentenceIndex < sentenceElements.length) {
+      const completedSentence = sentenceElements[sentenceIndex].lastElementChild;
+      completedSentence.classList.add('completed');
+      
+      const words = completedSentence.querySelectorAll('.canvas-item');
+      words.forEach((word) => {
+        word.setAttribute('draggable', 'false');
+        word.style.cursor = 'default';
+        word.classList.remove('active');
+        if (localStorage.lastPuzzle === word.dataset.item) {
+          localStorage.lastPuzzle = '';
+        }
+      });
+    }
   }
 
   makePuzzleDragable() {
-    function drag(event) {
-      event.target.style.cursor = 'grabbing';
-      event.dataTransfer.effectAllowed = 'copyMove';
-      event.dataTransfer.setData('text', event.target.dataset.item);
-    }
-
-    function allowDrop(event) {
-      event.preventDefault();
-    }
-
-    function drop(event) {
-      event.preventDefault();
-      const data = event.dataTransfer.getData('text');
-      const element = document.querySelector(`[data-item="${data}"]`);
-      if (!element) {
-        return false;
-      }
-      element.style.cursor = 'grab';
-
-      if (event.target.classList.contains('current-sentence')) {
-        event.target.appendChild(element);
-        return this.checkCurrentSentence();
-      }
-      if (event.target.classList.contains('canvas-item')) {
-        if (event.offsetX < event.target.clientWidth / 2) {
-          event.target.insertAdjacentElement('beforebegin', element);
-          return this.checkCurrentSentence();
+    const rawElement = this.container.querySelector('.raw');
+    if (rawElement) {
+      Array.from(rawElement.querySelectorAll('[data-item]')).forEach((puzzle) => {
+        if (!puzzle.parentElement || !puzzle.parentElement.classList.contains('completed')) {
+          puzzle.setAttribute('draggable', 'true');
         }
-        event.target.insertAdjacentElement('afterend', element);
-        return this.checkCurrentSentence();
-      }
-      return false;
-    }
-
-    this.state.puzzles.forEach((row) => {
-      Array.from(row.querySelectorAll('[data-item]')).forEach((puzzle) => {
-        puzzle.setAttribute('draggable', 'true');
-        puzzle.addEventListener('dragstart', (event) => drag(event), false);
       });
-    });
-
-    Array.from(this.container.querySelectorAll('.result--sentence-text_container')).forEach((sentenceBox) => {
-      sentenceBox.addEventListener('dragover', (event) => allowDrop(event));
-      sentenceBox.addEventListener('drop', (event) => drop.call(this, event));
-    });
+    }
   }
 }

@@ -157,7 +157,8 @@ export default async function getPuzzles({
     };
 
     img.onerror = (err) => {
-      reject(new Error(`Failed to load image: ${src}`));
+      console.log(err);
+      reject(err);
     };
   });
 }

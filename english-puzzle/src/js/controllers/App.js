@@ -16,33 +16,30 @@ export default class App {
   }
 
   determineTarget(event) {
-    const target = event.target;
-    const parent = target.parentElement;
-
     if (
-      (target.classList.contains('signin_btn') && !target.disabled)
-      || (parent?.classList.contains('signin_btn') && !parent.disabled)
+      (event.target.classList.contains('signin_btn') && !event.target.disabled)
+      || (event.target.parentElement.classList.contains('signin_btn') && !event.target.parentElement.disabled)
     ) {
       event.preventDefault();
-      return this.model.signIn?.();
+      return this.model.signIn();
     }
 
     if (
-      (target.classList.contains('signup_btn') && !target.disabled)
-      || (parent?.classList.contains('signup_btn') && !parent.disabled)
+      (event.target.classList.contains('signup_btn') && !event.target.disabled)
+      || (event.target.parentElement.classList.contains('signup_btn') && !event.target.parentElement.disabled)
     ) {
       event.preventDefault();
-      return this.model.signUp?.();
+      return this.model.signUp();
     }
 
-    if (target.classList.contains('logout_btn')) {
-      return this.model.logOut?.();
+    if (event.target.classList.contains('logout_btn')) {
+      return this.model.logOut();
     }
 
-    if (target.classList.contains('intro--start_btn')) {
+    if (event.target.classList.contains('intro--start_btn')) {
       return this.model.startGame();
     }
 
-    return false;
+    return 0;
   }
 }

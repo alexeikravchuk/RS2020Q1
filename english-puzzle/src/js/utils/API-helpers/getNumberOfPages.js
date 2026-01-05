@@ -1,8 +1,4 @@
 export default async function getNumberOfPages(group) {
-  if (typeof group !== 'number' || group < 0) {
-    throw new Error(`Invalid group parameter: ${group}`);
-  }
-
   const level = group + 1;
   const response = await fetch(`/collections/wordCollectionLevel${level}.json`);
 
